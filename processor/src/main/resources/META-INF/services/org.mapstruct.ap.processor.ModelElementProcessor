@@ -15,9 +15,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-org.mapstruct.ap.processor.CdiComponentProcessor
-org.mapstruct.ap.processor.Jsr330ComponentProcessor
-org.mapstruct.ap.processor.MapperCreationProcessor
-org.mapstruct.ap.processor.MapperRenderingProcessor
-org.mapstruct.ap.processor.MethodRetrievalProcessor
-org.mapstruct.ap.processor.SpringComponentProcessor
+org.mapstruct.ap.processor.MethodRetrievalProcessor      #     1
+org.mapstruct.ap.processor.MethodConversionProcessor     #   900
+org.mapstruct.ap.processor.MapperCreationProcessor       #  1000
+org.mapstruct.ap.processor.MethodValidationProcessor     #  1100
+org.mapstruct.ap.processor.CdiComponentProcessor         #  1200
+org.mapstruct.ap.processor.Jsr330ComponentProcessor      #  1200
+org.mapstruct.ap.processor.SpringComponentProcessor      #  1200
+org.mapstruct.ap.processor.MapperRenderingProcessor      # 10000

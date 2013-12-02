@@ -24,6 +24,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.lang.model.element.ExecutableElement;
+
 import org.mapstruct.ap.model.source.Method;
 import org.mapstruct.ap.util.Strings;
 
@@ -38,12 +40,14 @@ public abstract class MappingMethod extends AbstractModelElement {
     private final List<Parameter> parameters;
     private final Type returnType;
     private final Parameter targetParameter;
+    private final ExecutableElement executable;
 
     public MappingMethod(Method method) {
         this.name = method.getName();
         this.parameters = method.getParameters();
         this.returnType = method.getReturnType();
         this.targetParameter = method.getTargetParameter();
+        this.executable = method.getExecutable();
     }
 
     public String getName() {
@@ -105,6 +109,10 @@ public abstract class MappingMethod extends AbstractModelElement {
         }
 
         return parameterNames;
+    }
+
+    public ExecutableElement getExecutable() {
+        return executable;
     }
 
     @Override

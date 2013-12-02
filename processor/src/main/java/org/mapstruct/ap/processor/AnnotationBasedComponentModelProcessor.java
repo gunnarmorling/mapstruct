@@ -96,7 +96,7 @@ public abstract class AnnotationBasedComponentModelProcessor implements ModelEle
 
     @Override
     public int getPriority() {
-        return 1100;
+        return 1200;
     }
 
     protected TypeFactory getTypeFactory() {
