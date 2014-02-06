@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schema targetNamespace="http://www.mapstruct.org/itest/jaxb/product"
+	xmlns="http://www.w3.org/2001/XMLSchema" xmlns:products="http://www.mapstruct.org/itest/jaxb/product"
+	xmlns:category="http://www.mapstruct.org/itest/jaxb/category"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema">
+
+	<import schemaLocation="category.xsd"
+		namespace="http://www.mapstruct.org/itest/jaxb/category" />
+
+	<complexType name="Product">
+		<sequence>
+			<element name="Id" type="int" />
+			<element name="Name" type="string" />
+			<element name="Price" type="decimal" />
+			<element name="Size" type="string" minOccurs="0" />
+			<element name="Category" type="category:Category" />
+			<element name="AllCategories" type="category:Category" minOccurs="0" maxOccurs="10"/>
+			<element name="AvailableSince" type="xs:dateTime" />
+			<element name="AvailableSince2" type="xs:date" />
+		</sequence>
+	</complexType>
+</schema>
