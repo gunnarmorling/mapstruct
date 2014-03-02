@@ -23,6 +23,7 @@ import javax.annotation.processing.Filer;
 import javax.lang.model.element.TypeElement;
 import javax.tools.JavaFileObject;
 
+import org.mapstruct.ap.model.GeneratedType;
 import org.mapstruct.ap.model.Mapper;
 import org.mapstruct.ap.writer.ModelWriter;
 
@@ -44,7 +45,17 @@ public class MapperRenderingProcessor implements ModelElementProcessor<Mapper, V
     }
 
     private void writeToSourceFile(Filer filer, Mapper model) {
-        String fileName = model.getPackageName() + "." + model.getImplementationName();
+        ModelWriter modelWriter = new ModelWriter();
+
+        createMapperSourceFile( model, modelWriter, filer );
+
+        if ( model.getDecorator() != null ) {
+            createMapperSourceFile( model.getDecorator(), modelWriter, filer );
+        }
+    }
+
+    private void createMapperSourceFile(GeneratedType model, ModelWriter modelWriter, Filer filer) {
+        String fileName = model.getPackageName() + "." + model.getName();
 
         JavaFileObject sourceFile;
         try {
@@ -54,7 +65,7 @@ public class MapperRenderingProcessor implements ModelElementProcessor<Mapper, V
             throw new RuntimeException( e );
         }
 
-        new ModelWriter().writeModel( sourceFile, model );
+        modelWriter.writeModel( sourceFile, model );
     }
 
     @Override

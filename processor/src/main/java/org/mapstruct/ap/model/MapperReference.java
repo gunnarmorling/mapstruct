@@ -18,6 +18,9 @@
  */
 package org.mapstruct.ap.model;
 
+import java.util.Collections;
+import java.util.Set;
+
 import org.mapstruct.ap.model.common.ModelElement;
 import org.mapstruct.ap.model.common.Type;
 
@@ -26,7 +29,7 @@ import org.mapstruct.ap.model.common.Type;
  *
  * @author Gunnar Morling
  */
-public abstract class MapperReference extends ModelElement {
+public class MapperReference extends ModelElement {
 
     private final Type type;
     private final String variableName;
@@ -52,5 +55,10 @@ public abstract class MapperReference extends ModelElement {
      */
     public String getVariableName() {
         return variableName;
+    }
+
+    @Override
+    public Set<Type> getImportTypes() {
+        return Collections.emptySet();
     }
 }
