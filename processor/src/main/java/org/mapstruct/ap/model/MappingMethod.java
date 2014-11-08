@@ -78,8 +78,15 @@ public abstract class MappingMethod extends ModelElement {
     }
 
     public String getResultName() {
-        return targetParameter != null ? targetParameter.getName() :
-            Strings.getSaveVariableName( getResultType().getName(), getParameterNames() );
+        if ( targetParameter != null ) {
+            return targetParameter.getName();
+        }
+        else if ( getResultType().isArrayType() ) {
+            return Strings.getSaveVariableName( getResultType().getComponentType().getName() + "Tmp", getParameterNames() );
+        }
+        else {
+            return Strings.getSaveVariableName( getResultType().getName(), getParameterNames() );
+        }
     }
 
     public Type getReturnType() {

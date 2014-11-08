@@ -21,7 +21,7 @@
 package ${packageName};
 
 <#list importTypes as importedType>
-import ${importedType.fullyQualifiedName};
+import ${importedType.importName};
 </#list>
 
 @Generated(

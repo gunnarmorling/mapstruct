@@ -27,16 +27,24 @@
     <#if existingInstanceMapping>
     ${resultName}.clear();
     <#else>
-    <#-- Use the interface type on the left side, except it is java.lang.Iterable; use the implementation type - if present - on the right side -->
-    <#if resultType.fullyQualifiedName == "java.lang.Iterable"><@includeModel object=resultType.implementationType/><#else><@includeModel object=resultType/></#if> ${resultName} = <#if factoryMethod??><@includeModel object=factoryMethod/><#else>new <#if resultType.implementationType??><@includeModel object=resultType.implementationType/><#else><@includeModel object=resultType/></#if>()</#if>;
-   </#if>
+        <#if resultType.arrayType>
+            List<<@includeModel object=resultType.componentType/>> ${resultName} = <#if factoryMethod??><@includeModel object=factoryMethod/><#else>new ArrayList<<@includeModel object=resultType.componentType/>>()</#if>;
+        <#else>
+            <#-- Use the interface type on the left side, except it is java.lang.Iterable; use the implementation type - if present - on the right side -->
+            <#if resultType.fullyQualifiedName == "java.lang.Iterable"><@includeModel object=resultType.implementationType/><#else><@includeModel object=resultType/></#if> ${resultName} = <#if factoryMethod??><@includeModel object=factoryMethod/><#else>new <#if resultType.implementationType??><@includeModel object=resultType.implementationType/><#else><@includeModel object=resultType/></#if>()</#if>;
+        </#if>
+    </#if>
 
-    for ( <@includeModel object=sourceParameter.type.typeParameters[0]/> ${loopVariableName} : ${sourceParameter.name} ) {
-     <@includeModel object=elementAssignment targetBeanName=resultName targetAccessorName="add" targetType=resultType.typeParameters[0]/>
+    for ( <@includeModel object=sourceElementType/> ${loopVariableName} : ${sourceParameter.name} ) {
+        <@includeModel object=elementAssignment targetBeanName=resultName targetAccessorName="add" targetType=resultElementType/>
     }
-    <#if returnType.name != "void">
 
-    return ${resultName};
+    <#if returnType.name != "void">
+        <#if resultType.arrayType>
+            return ${resultName}.toArray( new <@includeModel object=resultType.componentType/>[${resultName}.size()] );
+        <#else>
+            return ${resultName};
+        </#if>
     </#if>
 }
 <#macro throws>

@@ -18,6 +18,8 @@
  */
 package org.mapstruct.ap.model;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -42,6 +44,7 @@ public class IterableMappingMethod extends MappingMethod {
     private final Assignment elementAssignment;
     private final MethodReference factoryMethod;
     private final boolean overridden;
+    private final Set<Type> additionalImports;
 
     public static class Builder {
 
@@ -71,13 +74,13 @@ public class IterableMappingMethod extends MappingMethod {
         }
 
         public IterableMappingMethod build() {
-            Type sourceElementType =
-                method.getSourceParameters().iterator().next().getType().getTypeParameters().get( 0 );
-            Type targetElementType =
-                method.getResultType().getTypeParameters().get( 0 );
-            String conversionStr =
-                Strings.getSaveVariableName( sourceElementType.getName(), method.getParameterNames() );
+            Type sourceParameterType = method.getSourceParameters().iterator().next().getType();
+            Type resultType = method.getResultType();
 
+            Type sourceElementType = sourceParameterType.isArrayType() ? sourceParameterType.getComponentType() : sourceParameterType.getTypeParameters().get( 0 );
+            Type targetElementType = resultType.isArrayType() ? resultType.getComponentType() : resultType.getTypeParameters().get( 0 );
+
+            String conversionStr = Strings.getSaveVariableName( sourceElementType.getName(), method.getParameterNames() );
 
             Assignment assignment = ctx.getMappingResolver().getTargetAssignment(
                 method,
@@ -103,16 +106,24 @@ public class IterableMappingMethod extends MappingMethod {
             assignment = new SetterWrapper( assignment, method.getThrownTypes() );
 
             MethodReference factoryMethod = AssignmentFactory.createFactoryMethod( method.getReturnType(), ctx );
-            return new IterableMappingMethod( method, assignment, factoryMethod );
+            Set<Type> additionalImports = new HashSet<Type>();
+            if ( resultType.isArrayType() ) {
+                additionalImports.add( ctx.getTypeFactory().getType( List.class ) );
+                if ( factoryMethod == null ) {
+                    additionalImports.add( ctx.getTypeFactory().getType( ArrayList.class ) );
+                }
+            }
+            return new IterableMappingMethod( method, assignment, factoryMethod, additionalImports );
         }
     }
 
 
-    private IterableMappingMethod(Method method, Assignment parameterAssignment, MethodReference factoryMethod) {
+    private IterableMappingMethod(Method method, Assignment parameterAssignment, MethodReference factoryMethod, Set<Type> additionalImports) {
         super( method );
         this.elementAssignment = parameterAssignment;
         this.factoryMethod = factoryMethod;
         this.overridden = method.overridesMethod();
+        this.additionalImports = additionalImports;
     }
 
     public Parameter getSourceParameter() {
@@ -132,6 +143,7 @@ public class IterableMappingMethod extends MappingMethod {
     @Override
     public Set<Type> getImportTypes() {
         Set<Type> types = super.getImportTypes();
+        types.addAll( additionalImports );
 
         if ( elementAssignment != null ) {
             types.addAll( elementAssignment.getImportTypes() );
@@ -141,14 +153,36 @@ public class IterableMappingMethod extends MappingMethod {
     }
 
     public String getLoopVariableName() {
-        return Strings.getSaveVariableName(
-            getSourceParameter().getType().getTypeParameters().get( 0 ).getName(),
-            getParameterNames()
-        );
+        Type sourceParameterType = getSourceParameter().getType();
+        String elementTypeName = sourceParameterType.isArrayType() ?
+                        sourceParameterType.getComponentType().getName() :
+                        sourceParameterType.getTypeParameters().get( 0 ).getName();
+
+        return Strings.getSaveVariableName( elementTypeName, getParameterNames() );
     }
 
     public MethodReference getFactoryMethod() {
         return this.factoryMethod;
+    }
+
+    public Type getSourceElementType() {
+        Type sourceParameterType = getSourceParameter().getType();
+
+        if ( sourceParameterType.isArrayType() ) {
+            return sourceParameterType.getComponentType();
+        }
+        else {
+            return sourceParameterType.getTypeParameters().get( 0 );
+        }
+    }
+
+    public Type getResultElementType() {
+        if ( getResultType().isArrayType() ) {
+            return getResultType().getComponentType();
+        }
+        else {
+            return getResultType().getTypeParameters().get( 0 );
+        }
     }
 
     @Override
