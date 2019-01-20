@@ -628,7 +628,7 @@
                 <executions>
                     <execution>
                         <id>enforce-mapstruct-rules</id>
-                        <phase>validate</phase>
+                        <phase>none</phase>
                         <goals>
                             <goal>enforce</goal>
                         </goals>

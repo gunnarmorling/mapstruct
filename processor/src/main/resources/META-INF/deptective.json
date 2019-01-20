@@ -1,0 +1,55 @@
+{
+  "components" : [ {
+    "name" : "org.mapstruct.ap",
+    "contains" : [ "org.mapstruct.ap" ],
+    "reads" : [ "org.mapstruct.ap.internal.model", "org.mapstruct.ap.internal.option", "org.mapstruct.ap.internal.prism", "org.mapstruct.ap.internal.processor", "org.mapstruct.ap.internal.util", "org.mapstruct.ap.spi" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.conversion",
+    "contains" : [ "org.mapstruct.ap.internal.conversion" ],
+    "reads" : [ "org.mapstruct.ap.internal.model", "org.mapstruct.ap.internal.util" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.model",
+    "contains" : [ "org.mapstruct.ap.internal.model*" ],
+    "reads" : [ "org.mapstruct.ap.internal.option", "org.mapstruct.ap.internal.prism", "org.mapstruct.ap.internal.util", "org.mapstruct.ap.internal.util.accessor", "org.mapstruct.ap.internal.version", "org.mapstruct.ap.internal.writer", "org.mapstruct.ap.spi" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.option",
+    "contains" : [ "org.mapstruct.ap.internal.option" ],
+    "reads" : [ "org.mapstruct.ap.internal.prism" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.prism",
+    "contains" : [ "org.mapstruct.ap.internal.prism" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.processor",
+    "contains" : [ "org.mapstruct.ap.internal.processor" ],
+    "reads" : [ "org.mapstruct.ap.internal.model", "org.mapstruct.ap.internal.option", "org.mapstruct.ap.internal.prism", "org.mapstruct.ap.internal.processor.creation", "org.mapstruct.ap.internal.util", "org.mapstruct.ap.internal.util.workarounds", "org.mapstruct.ap.internal.version", "org.mapstruct.ap.internal.writer" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.processor.creation",
+    "contains" : [ "org.mapstruct.ap.internal.processor.creation" ],
+    "reads" : [ "org.mapstruct.ap.internal.conversion", "org.mapstruct.ap.internal.model", "org.mapstruct.ap.internal.prism", "org.mapstruct.ap.internal.util" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.util",
+    "contains" : [ "org.mapstruct.ap.internal.util" ],
+    "reads" : [ "org.mapstruct.ap.internal.option", "org.mapstruct.ap.internal.prism", "org.mapstruct.ap.internal.util.accessor", "org.mapstruct.ap.internal.util.workarounds", "org.mapstruct.ap.spi" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.util.accessor",
+    "contains" : [ "org.mapstruct.ap.internal.util.accessor" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.util.workarounds",
+    "contains" : [ "org.mapstruct.ap.internal.util.workarounds" ],
+    "reads" : [ "org.mapstruct.ap.internal.version" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.version",
+    "contains" : [ "org.mapstruct.ap.internal.version" ]
+  }, {
+    "name" : "org.mapstruct.ap.internal.writer",
+    "contains" : [ "org.mapstruct.ap.internal.writer" ]
+  }, {
+    "name" : "org.mapstruct.ap.spi",
+    "contains" : [ "org.mapstruct.ap.spi" ],
+    "reads" : [ "org.mapstruct.ap.spi.util" ]
+  }, {
+    "name" : "org.mapstruct.ap.spi.util",
+    "contains" : [ "org.mapstruct.ap.spi.util" ]
+  } ],
+  "whitelisted" : [ "freemarker.cache", "freemarker.core", "freemarker.ext.beans", "freemarker.log", "freemarker.template", "java.io", "java.lang.reflect", "java.math", "java.net", "java.nio.charset", "java.sql", "java.text", "java.time", "java.time.format", "java.util", "java.util.concurrent", "java.util.jar", "java.util.regex", "java.util.stream", "javax.annotation.processing", "javax.lang.model", "javax.lang.model.element", "javax.lang.model.type", "javax.lang.model.util", "javax.tools", "javax.xml.bind", "javax.xml.bind.annotation", "javax.xml.datatype", "net.java.dev.hickory.prism", "org.eclipse.jdt.core.compiler", "org.eclipse.jdt.internal.compiler.apt.dispatch", "org.eclipse.jdt.internal.compiler.apt.model", "org.eclipse.jdt.internal.compiler.lookup", "org.mapstruct", "org.mapstruct.util" ]
+}
